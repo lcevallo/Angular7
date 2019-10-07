@@ -25,3 +25,19 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+fontawesome
+npm install @fortawesome/fontawesome-free --save
+
+Para instalar bootstrap popper jquery
+
+
+https://www.c-sharpcorner.com/article/how-to-install-jquery-popper-and-bootstrap-in-angular/
+
+Pasos con el git 
+echo "# Angular7" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/lcevallo/Angular7.git
+git push -u origin master
