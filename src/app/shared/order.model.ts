@@ -1,8 +1,10 @@
+import {Customer} from './customer.model';
+
 export class Order {
 
   orderId: number;
   orderNo: string;
-  customerId: number;
+  customer: Customer;
   pmethod: string;
   gtotal: number;
 

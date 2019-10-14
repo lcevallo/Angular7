@@ -26,16 +26,15 @@ export class OrderItemsComponent implements OnInit {
 
   ngOnInit() {
     this.itemService.getItemList().then(res => {
-                                this.itemList = res.content as Item[];
+                                this.itemList = res['content'] as Item[];
                                   }
                             );
     if ( this.data.OrderItemIndex === null) {
     this.formData = {
       orderItemId: null,
       orderId: this.data.OrderId,
-      itemId: 0,
+      itemId: new Item(),
       quantity: 0,
-      ItemName: '',
       Price: 0,
       total: 0 };
    } else {
@@ -48,10 +47,10 @@ export class OrderItemsComponent implements OnInit {
   updatePrice(ctrl) {
     if (ctrl.selectedIndex === 0) {
       this.formData.Price = 0;
-      this.formData.ItemName = '';
+      this.formData.itemId.name = '';
     } else {
       this.formData.Price = this.itemList[ctrl.selectedIndex - 1].price;
-      this.formData.ItemName = this.itemList[ctrl.selectedIndex - 1].name;
+      this.formData.itemId.name  = this.itemList[ctrl.selectedIndex - 1].name;
 
     }
     this.updateTotal();
@@ -64,18 +63,36 @@ export class OrderItemsComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (this.validateForm(form.value)) {
-      if(this.data.OrderItemIndex === null)
+      if (this.data.OrderItemIndex === null) {
+
+        this.extracted(form);
+
         this.orderService.orderItems.push(form.value);
-      else
-          this.orderService.orderItems[this.data.OrderItemIndex] = form.value;
+        console.log(form.value);
+      } else {
+        this.extracted(form);
+        this.orderService.orderItems[this.data.OrderItemIndex] = form.value;
+        console.log(form.value);
+      }
       this.dialogRef.close();
     }
 
   }
 
+  private extracted(form: NgForm) {
+    const item: Item = new Item();
+    item.itemId = form.value.itemId;
+    item.name = form.value.name;
+    item.price = form.value.Price;
+    delete form.value.itemId;
+    delete form.value.name;
+    delete form.value.Price;
+    form.value.itemId = item;
+  }
+
   validateForm(formData: OrderItem) {
     this.isValid = true;
-    if (formData.itemId === 0) {
+    if (formData.itemId.itemId === 0) {
         this.isValid = false;
     } else if (formData.quantity === 0) {
       this.isValid = false;

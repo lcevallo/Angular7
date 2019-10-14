@@ -3,11 +3,11 @@
 <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)" >
   <input type="hidden" name="orderItemId" #orderItemId="ngModel" [(ngModel)]="formData.orderItemId">
   <input type="hidden" name="orderId" #orderId="ngModel" [(ngModel)]="formData.orderId">
-  <input type="hidden" name="ItemName" #ItemName="ngModel" [(ngModel)]="formData.ItemName">
+  <input type="hidden" name="name" #name="ngModel" [(ngModel)]="formData.itemId.name">
     <div class="form-group">
       <label>Food Item</label>
-      <select #itemId="ngModel" [(ngModel)]="formData.itemId" class="form-control" name="itemId" (change)="updatePrice($event.target)"
-      [class.is-invalid]="!isValid && formData.itemId==0"
+      <select #itemId="ngModel" [(ngModel)]="formData.itemId.itemId" class="form-control" name="itemId" (change)="updatePrice($event.target)"
+      [class.is-invalid]="!isValid && formData.itemId.itemId==0"
       >
         <option value="0">-Select-</option>
         <option *ngFor="let item of itemList" value="{{item.itemId}}">{{item.name}}</option>
