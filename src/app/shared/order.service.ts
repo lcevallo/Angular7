@@ -11,7 +11,7 @@ export class OrderService {
   formData: Order;
   orderItems: OrderItem[];
 
-  constructor(private htpp: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   saveOrUpdate() {
 
@@ -19,8 +19,10 @@ export class OrderService {
       ...this.formData,
       orderItems : this.orderItems
     };
-    console.log(body);
+    return  this.http.post( environment.apiURL + '/order', body);
+  }
 
-    return  this.htpp.post( environment.apiURL + '/order', body);
+  getOrderList() {
+    return this.http.get(environment.apiURL + '/order').toPromise();
   }
 }
