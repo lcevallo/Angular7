@@ -6,7 +6,7 @@ import {OrderItemsComponent} from '../order-items/order-items.component';
 import {CustomerService} from '../../shared/customer.service';
 import {Customer} from '../../shared/customer.model';
 import {ToastrService} from 'ngx-toastr';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -23,11 +23,30 @@ export class OrderComponent implements OnInit {
               private dialog: MatDialog,
               private customerService: CustomerService,
               private toastr: ToastrService,
-              private router: Router
+              private router: Router,
+              private currentRoute: ActivatedRoute
               ) { }
 
   ngOnInit() {
-    this.resetForm();
+    let orderID = this.currentRoute.snapshot.paramMap.get('id');
+
+    if (orderID === null) {
+      this.resetForm();
+    } else {
+
+      this.service.getOrderItembyId( parseInt (orderID)).then(res => {
+
+        let orderObject1 = JSON.parse( JSON.stringify( res['content'] ) );
+        this.service.orderItems = orderObject1;
+      });
+
+      this.service.getOrderbyId( parseInt (orderID)).then(res => {
+          let orderObject = JSON.parse( JSON.stringify( res ) );
+          this.service.formData = orderObject;
+        });
+
+    }
+
 
     this.customerService.getCustomerList().then(res => {
         this.customerList = res['content'] as Customer[];
@@ -44,7 +63,8 @@ export class OrderComponent implements OnInit {
         // customer.customerId: 0,
         customer: new Customer(),
         pmethod: '',
-        gtotal: 0
+        gtotal: 0,
+        deletedOrderItemIds: ''
       };
     this.service.orderItems = [];
   }
@@ -64,6 +84,15 @@ export class OrderComponent implements OnInit {
 
 
   onDeleteOrderItem(orderItemId: number, i: number) {
+
+    if (orderItemId != null) {
+       if ( this.service.formData.deletedOrderItemIds == null) {
+          this.service.formData.deletedOrderItemIds = '';
+       }
+      this.service.formData.deletedOrderItemIds += orderItemId == null ? '' : orderItemId + ',';
+      console.log(this.service.formData.deletedOrderItemIds );
+    }
+
     this.service.orderItems.splice(i, 1);
     this.updateGrandTotal();
 

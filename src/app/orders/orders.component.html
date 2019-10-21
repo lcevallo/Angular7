@@ -4,7 +4,21 @@
     <th>Customer</th>
     <th>P. Method</th>
     <th>G. Total</th>
-    <th></th>
+    <th>
+      <a class="btn btn-outline-success" routerLink="/order"><i class="fa fa-plus-square"></i> Create New</a>
+    </th>
   </thead>
+  <tbody>
+  <tr *ngFor="let item of orderList" >
+    <th (click)="openForEdit(item.orderId)" >{{item.orderNo}}</th>
+    <td (click)="openForEdit(item.orderId)">{{item.customer.name}}</td>
+    <td (click)="openForEdit(item.orderId)">{{item.pmethod}}</td>
+    <td (click)="openForEdit(item.orderId)">{{item.gtotal}}</td>
+    <td>
+      <a class="btn text-danger" (click)="onOrderDelete(item.orderId)" ><i class="fa fa-trash fa-lg"></i></a>
+    </td>
+  </tr>
+
+  </tbody>
   
 </table>

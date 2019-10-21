@@ -46,10 +46,10 @@ export class OrderItemsComponent implements OnInit {
 
   updatePrice(ctrl) {
     if (ctrl.selectedIndex === 0) {
-      this.formData.Price = 0;
+      this.formData.itemId.price = 0;
       this.formData.itemId.name = '';
     } else {
-      this.formData.Price = this.itemList[ctrl.selectedIndex - 1].price;
+      this.formData.itemId.price = this.itemList[ctrl.selectedIndex - 1].price;
       this.formData.itemId.name  = this.itemList[ctrl.selectedIndex - 1].name;
 
     }
@@ -58,7 +58,7 @@ export class OrderItemsComponent implements OnInit {
   }
 
   updateTotal() {
-    this.formData.total = parseFloat((this.formData.quantity * this.formData.Price).toFixed(2));
+    this.formData.total = parseFloat((this.formData.quantity * this.formData.itemId.price).toFixed(2));
   }
 
   onSubmit(form: NgForm) {
@@ -68,11 +68,11 @@ export class OrderItemsComponent implements OnInit {
         this.extracted(form);
 
         this.orderService.orderItems.push(form.value);
-        console.log(form.value);
+
       } else {
         this.extracted(form);
         this.orderService.orderItems[this.data.OrderItemIndex] = form.value;
-        console.log(form.value);
+
       }
       this.dialogRef.close();
     }
@@ -83,10 +83,10 @@ export class OrderItemsComponent implements OnInit {
     const item: Item = new Item();
     item.itemId = form.value.itemId;
     item.name = form.value.name;
-    item.price = form.value.Price;
+    item.price = form.value.price;
     delete form.value.itemId;
     delete form.value.name;
-    delete form.value.Price;
+    delete form.value.price;
     form.value.itemId = item;
   }
 

@@ -1,4 +1,5 @@
 import {Customer} from './customer.model';
+import {Item} from './item.model';
 
 export class Order {
 
@@ -7,5 +8,7 @@ export class Order {
   customer: Customer;
   pmethod: string;
   gtotal: number;
+  orderItems?: Item[];
+  deletedOrderItemIds: string = '';
 
 }
